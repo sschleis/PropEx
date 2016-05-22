@@ -1,0 +1,7 @@
+Version 0.1
+- Export von @Value Properties in File
+
+ToDo:
+- Export von Properties in XML Dateien
+- Unterstützung von verschiedenen Exportformaten (Log, ASCIIDoc, ...)
+- Tests
