@@ -7,8 +7,10 @@ import org.apache.maven.plugin.MojoFailureException;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 /**
@@ -56,7 +58,7 @@ public class PropExMojo extends AbstractMojo
      * @required
      */
     private File outputDirectory;
-    private List<SpringPropertie> properties = new LinkedList<SpringPropertie>();
+    private Map<String, SpringPropertie> properties = new HashMap<String, SpringPropertie>();
     private String encoding = "UTF-8";
 
     public void execute() throws MojoExecutionException, MojoFailureException
@@ -94,7 +96,7 @@ public class PropExMojo extends AbstractMojo
         {
             w = new FileWriter(touch);
             w.write("Properties found: " + properties.size() + "\n");
-            for (SpringPropertie propertie : properties)
+            for (SpringPropertie propertie : properties.values())
             {
                 w.append(propertie.toCsv());
             }
@@ -164,14 +166,14 @@ public class PropExMojo extends AbstractMojo
             String defaultValue = substring.substring(dp + 1, substring.length());
             if (checkPropertie(name))
             {
-                properties.add(new SpringPropertie(name, null, defaultValue, null));
+                properties.put(name, new SpringPropertie(name, null, defaultValue, null));
             }
         }
         else
         {
             if (checkPropertie(substring))
             {
-                properties.add(new SpringPropertie(substring, null, null, null));
+                properties.put(substring, new SpringPropertie(substring, null, null, null));
             }
         }
 
