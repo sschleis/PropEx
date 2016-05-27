@@ -184,9 +184,7 @@ public class PropExMojo extends AbstractMojo
 
     private boolean checkPropertie(final String prop){
         boolean result = true;
-        if(prop.contains("_"))
-            result = false;
-        if(prop.matches("[A-Z]*"))
+        if(prop.matches("[A-Z_]*"))
             result = false;
 
         return result;
