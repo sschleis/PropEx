@@ -15,6 +15,7 @@ import java.util.*;
  * @goal propex
  * @phase install
  */
+@SuppressWarnings({"ResultOfMethodCallIgnored", "unused"})
 public class PropExMojo extends AbstractMojo {
 
     /**
@@ -62,12 +63,15 @@ public class PropExMojo extends AbstractMojo {
 
     /**
      * @parameter expression="${project.version}"
-     * @requiered
+     * @required
      */
     private String version;
 
     private Map<String, SpringPropertie> properties = new HashMap<String, SpringPropertie>();
-    private String encoding = "UTF-8";
+    private static final String ENCODING = "UTF-8";
+
+    public PropExMojo() {
+    }
 
     public void execute() throws MojoExecutionException, MojoFailureException {
 
@@ -125,6 +129,13 @@ public class PropExMojo extends AbstractMojo {
                     // ignore
                 }
             }
+            if (writerADOC != null) {
+                try {
+                    writerADOC.close();
+                } catch (IOException e) {
+                    // ignore
+                }
+            }
         }
     }
 
@@ -139,7 +150,7 @@ public class PropExMojo extends AbstractMojo {
     }
 
     private void adocBody(FileWriter w, Collection<SpringPropertie> list) throws IOException {
-        for(SpringPropertie propertie : list){
+        for (SpringPropertie propertie : list) {
             String defaultValue = propertie.getDefaultValue() != null ? propertie.getDefaultValue() : "";
             w.write("|" + propertie.getName() + " |" + defaultValue + "\n");
         }
@@ -149,7 +160,7 @@ public class PropExMojo extends AbstractMojo {
     private void findProperties(final List<String> files) {
         for (String file : files) {
             try {
-                final Scanner scan = new Scanner(new File(file), encoding);
+                final Scanner scan = new Scanner(new File(file), ENCODING);
                 String line = scan.nextLine().trim();
                 while (scan.hasNext()) {
                     try {
@@ -204,11 +215,14 @@ public class PropExMojo extends AbstractMojo {
             files.add(root.getPath());
             return;
         }
-        for (final File file : root.listFiles()) {
-            if (file.isDirectory()) {
-                fillListWithAllFilesRecursiveTask(file, files);
-            } else {
-                files.add(file.getPath());
+        final File[] listFile = root.listFiles();
+        if (listFile != null) {
+            for (final File file : listFile) {
+                if (file.isDirectory()) {
+                    fillListWithAllFilesRecursiveTask(file, files);
+                } else {
+                    files.add(file.getPath());
+                }
             }
         }
     }

@@ -1,35 +1,21 @@
 package de.sschleis.maven.plugin;
 
-public class SpringPropertie {
+@SuppressWarnings("unused")
+class SpringPropertie {
 
     private String name;
     private String type;
     private String defaultValue;
     private String fileName;
 
-    public SpringPropertie(String name, String type, String defaultValue, String fileName) {
+    SpringPropertie(String name, String type, String defaultValue, String fileName) {
         this.name = name;
         this.type = type;
         this.defaultValue = defaultValue;
         this.fileName = fileName;
     }
 
-    public SpringPropertie(String line) {
-
-        final int start = line.indexOf("${");
-        final int end = line.indexOf("}");
-        if (line.contains(":")) {
-            final int dp = line.indexOf(":");
-            name = line.substring(start + 2, dp);
-            defaultValue = line.substring(dp + 1, end);
-        } else {
-            name = line.substring(start + 2, end);
-        }
-
-
-    }
-
-    public String getName() {
+    String getName() {
         return name;
     }
 
@@ -45,7 +31,7 @@ public class SpringPropertie {
         this.type = type;
     }
 
-    public String getDefaultValue() {
+    String getDefaultValue() {
         return defaultValue;
     }
 
@@ -71,10 +57,11 @@ public class SpringPropertie {
                 '}';
     }
 
-    public String toCsv() {
+    String toCsv() {
         return name + ", " + defaultValue + "\n";
     }
 
+    @SuppressWarnings("SimplifiableIfStatement")
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
