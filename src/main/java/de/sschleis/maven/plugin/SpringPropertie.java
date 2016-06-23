@@ -8,6 +8,9 @@ class SpringPropertie {
     private String defaultValue;
     private String fileName;
 
+    private static final String WITH_DEFAULT = "#%s=%s\n";
+    private static final String WITH_OUT_DEFAULT = "%s=\n";
+
     SpringPropertie(String name, String type, String defaultValue, String fileName) {
         this.name = name;
         this.type = type;
@@ -59,6 +62,16 @@ class SpringPropertie {
 
     String toCsv() {
         return name + ", " + defaultValue + "\n";
+    }
+
+    String toSpringPropertie(){
+        String result = "";
+        if(defaultValue != null){
+            result = String.format(WITH_DEFAULT, name, defaultValue);
+        }else {
+            result = String.format(WITH_OUT_DEFAULT, name);
+        }
+        return result;
     }
 
     @SuppressWarnings("SimplifiableIfStatement")

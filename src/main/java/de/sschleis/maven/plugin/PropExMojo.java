@@ -99,12 +99,15 @@ public class PropExMojo extends AbstractMojo {
 
         String fileNameTXT = artifactId + "-" + version + "-" + "propEx.txt";
         String fileNameADOC = artifactId + "-" + version + "-" + "propEx.adoc";
+        String fileNameProp = artifactId + "-" + version + "-" + "propEx.properties";
 
         File touchTXT = new File(f, fileNameTXT);
         File touchADOC = new File(f, fileNameADOC);
+        File touchPROP = new File(f, fileNameProp);
 
         FileWriter writerTXT = null;
         FileWriter writerADOC = null;
+        FileWriter writerProp = null;
         try {
             writerTXT = new FileWriter(touchTXT);
             writerTXT.write("Properties found: " + properties.size() + "\n");
@@ -117,8 +120,14 @@ public class PropExMojo extends AbstractMojo {
             adocBody(writerADOC, properties.values());
             adocFooter(writerADOC);
 
+            writerProp = new FileWriter(touchPROP);
+            for(SpringPropertie propertie : properties.values()) {
+                writerProp.append(propertie.toSpringPropertie());
+            }
+
             writerTXT.flush();
             writerADOC.flush();
+            writerProp.flush();
         } catch (IOException e) {
             throw new MojoExecutionException("Error creating file " + touchTXT, e);
         } finally {
