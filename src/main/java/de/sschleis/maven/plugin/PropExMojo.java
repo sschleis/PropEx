@@ -145,6 +145,13 @@ public class PropExMojo extends AbstractMojo {
                     // ignore
                 }
             }
+            if (writerProp != null) {
+                try {
+                    writerProp.close();
+                } catch (IOException e) {
+                    // ignore
+                }
+            }
         }
     }
 
